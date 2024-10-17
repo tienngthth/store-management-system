@@ -1,29 +1,34 @@
-docker build -t tienngthth/order-service:latest order_service/.
-docker build -t tienngthth/inventory-service:latest inventory_service/.
-docker build -t tienngthth/user-service:latest user_service/.
-docker build -t tienngthth/auth-service:latest auth_service/.
-docker build -t tienngthth/front-end:latest front_end/.
-
-docker push tienngthth/user-service:latest
-docker push tienngthth/auth-service:latest
-docker push tienngthth/order-service:latest
-docker push tienngthth/inventory-service:latest
-docker push tienngthth/front-end:latest
-
-kubectl apply -f deployment/auth_service.yml
-kubectl apply -f deployment/user_service.yml
-kubectl apply -f deployment/front_end.yml
-kubectl apply -f deployment/postgres.yml
-kubectl apply -f deployment/ingress.yml
-
+gcloud container clusters get-credentials infs3208-cluster-1 --zone=australia-southeast2-c
+gcloud container clusters resize infs3208-cluster-1 --num-nodes=2 --zone australia-southeast2-c
+kubectl get node -o wide
 
 git clone https://github.com/tienngthth/store-management-system.git
+cd store-management-system
 
+docker build -t tienngthth/order-service:3 order_service/.
+docker build -t tienngthth/inventory-service:3 inventory_service/.
+docker build -t tienngthth/user-service:3 user_service/.
+docker build -t tienngthth/auth-service:4 auth_service/.
+docker build -t tienngthth/front-end:5 front_end/.
 
-gcloud container clusters get-credentials infs3208-cluster-1 --zone=australia-southeast2-c
+docker push tienngthth/user-service:3
+docker push tienngthth/auth-service:4
+docker push tienngthth/order-service:3
+docker push tienngthth/inventory-service:3
+docker push tienngthth/front-end:5
 
-
+kubectl apply -f deployment/postgres.yml
+kubectl apply -f deployment/auth_service.yml
+kubectl apply -f deployment/user_service.yml
+kubectl apply -f deployment/inventory_service.yml
+kubectl apply -f deployment/order_service.yml
+kubectl apply -f deployment/ingress.yml
+kubectl apply -f deployment/front_end.yml
 
 helm repo add ingress-nginx https://kubernetes.github.io/ingress-nginx
 helm repo update
 helm install nginx-ingress ingress-nginx/ingress-nginx
+
+gcloud compute addresses create backend-ip --global
+gcloud compute addresses describe backend-ip --global
+34.102.145.201

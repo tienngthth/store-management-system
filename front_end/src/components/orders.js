@@ -16,14 +16,14 @@ export default function Orders(
   useEffect(() => {
     const fetch = async () => {
       if (user.role == 'customer') {
-        const orders = await getOrders(user.id);
-        if (orders) {
-          setOrders(orders);
+        const data = await getOrders(user.id);
+        if (!data.error) {
+          setOrders(data.orders);
         }
       } else {
-        const orders = await getAllOrders();
-        if (orders) {
-          setOrders(orders);
+        const data = await getAllOrders();
+        if (!data.error) {
+          setOrders(data.orders);
         }
       }
     }

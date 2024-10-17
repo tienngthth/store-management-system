@@ -20,7 +20,7 @@ RUN poetry install --no-root
 COPY src src
 COPY bin bin
 
-ENV DATABASE_URL=postgresql://administrator:verySecretPassword@host.docker.internal:5432/db
+ENV DATABASE_URL=postgresql://administrator:verySecretPassword@postgres-database:5432/db
 ENV AWS_DEFAULT_REGION=us-east-1
 
 # Running our application

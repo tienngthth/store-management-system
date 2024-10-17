@@ -31,7 +31,7 @@ def load_models(app):
       db.session.commit()
 
 def create_app():
-   app.config['SQLALCHEMY_DATABASE_URI'] = environ.get("DATABASE_URL", "postgresql://administrator:verySecretPassword@localhost:5432/db")
+   app.config['SQLALCHEMY_DATABASE_URI'] = environ.get("DATABASE_URL", "postgresql://administrator:verySecretPassword@postgres-database:5432/db")
    app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
    # Load the models 

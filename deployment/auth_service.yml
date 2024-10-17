@@ -16,7 +16,28 @@ spec:
     spec:
       containers:
       - name: auth-service
-        image: tienngthth/auth-service:latest
+        imagePullPolicy: Always
+        image: tienngthth/auth-service:3
+        livenessProbe:
+            failureThreshold: 3
+            httpGet:
+              path: /auth/health
+              port: 80
+              scheme: HTTP
+            initialDelaySeconds: 60
+            periodSeconds: 60
+            successThreshold: 1
+            timeoutSeconds: 10
+        readinessProbe:
+          failureThreshold: 3
+          httpGet:
+            path: /auth/health
+            port: 80
+            scheme: HTTP
+          initialDelaySeconds: 60
+          periodSeconds: 60
+          successThreshold: 1
+          timeoutSeconds: 10
         env:
           - name: DATABASE_URL
             value: "postgresql://administrator:verySecretPassword@postgres-database:5432/db"
@@ -34,4 +55,4 @@ spec:
     - protocol: TCP
       port: 82
       targetPort: 80
-  type: ClusterIP
+  type: NodePort

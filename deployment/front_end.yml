@@ -16,12 +16,7 @@ spec:
     spec:
       containers:
       - name: front-end
-        image: tienngthth/front-end:latest
-        env:
-          - name: USER_SERVICE
-            value: "http://user-service:82"
-          - name: AUTH_SERVICE
-            value: "http://auth-service:81"
+        image: tienngthth/front-end:5
         ports:
           - containerPort: 80
 ---
@@ -34,6 +29,6 @@ spec:
     app: front-end
   ports:
     - protocol: TCP
-      port: 9000
+      port: 80
       targetPort: 80
-  type: ClusterIP
+  type: LoadBalancer

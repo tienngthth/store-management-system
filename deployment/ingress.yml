@@ -1,14 +1,40 @@
-apiVersion: extensions/v1beta1
+apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: internal-ingress
+  name: backend-ingress
+  annotations:
+    kubernetes.io/ingress.global-static-ip-name: backend-ip
+  labels:
+    app: backend-ingress
 spec:
   rules:
     - http:
         paths:
-          - path: /
-            backend:
-              service:
-                name: auth-service
-                port:
-                  number: 82
+        - path: /users/*
+          pathType: ImplementationSpecific
+          backend:
+            service:
+              name: user-service
+              port:
+                number: 81
+        - path: /auth/*
+          pathType: ImplementationSpecific
+          backend:
+            service:
+              name: auth-service
+              port:
+                number: 82
+        - path: /inventory/*
+          pathType: ImplementationSpecific
+          backend:
+            service:
+              name: inventory-service
+              port:
+                number: 83
+        - path: /orders/*
+          pathType: ImplementationSpecific
+          backend:
+            service:
+              name: order-service
+              port:
+                number: 84

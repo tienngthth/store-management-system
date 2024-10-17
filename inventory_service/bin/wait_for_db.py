@@ -20,7 +20,7 @@ def wait_for_db(db_url, retries=6, timeout=15):
 
 if __name__ == "__main__":
     # Get SQLIALCHEMY_DATABASE_URI from the environment
-    db_url = environ.get("DATABASE_URL", "postgresql://administrator:verySecretPassword@localhost:5432/db")
+    db_url = environ.get("DATABASE_URL", "postgresql://administrator:verySecretPassword@postgres-database:5432/db")
     if "sqlite" in db_url:
         exit()
     wait_for_db(db_url)

@@ -2,7 +2,7 @@ import axios from 'axios'
 
 export const createOrder = async (user_id, item, quantity) => {
     try {
-        const response = await axios.post(`${process.env.REACT_APP_ORDER_SERVICE}`, {
+        await axios.post(`${process.env.REACT_APP_ORDER_SERVICE}`, {
             user_id: user_id,
             item_id: item.id,
             item_name: item.name,
@@ -33,12 +33,12 @@ export const getOrders = async (user_id) => {
                 "Access-Control-Allow-Headers": "*"
             }
         })
-        return response.data
+        return {"orders": response.data}
     } catch (error) {
         if (error.message) {
-            return error.message
+            return {"error": error.message }
         }
-        return error.response.data.error;
+        return {"error": error.response.data.error}
     }
 }
 
@@ -51,18 +51,18 @@ export const getAllOrders = async () => {
                 "Access-Control-Allow-Headers": "*"
             }
         })
-        return response.data
+        return {"orders": response.data}
     } catch (error) {
         if (error.message) {
-            return error.message
+            return {"error": error.message }
         }
-        return error.response.data.error;
+        return {"error": error.response.data.error}
     }
 }
 
 export const updateOrderStatus = async (id, status) => {
     try {
-        const response = await axios.put(`${process.env.REACT_APP_ORDER_SERVICE}${id}/`, {
+        await axios.put(`${process.env.REACT_APP_ORDER_SERVICE}${id}/`, {
             status: status
         },
             {
@@ -82,7 +82,7 @@ export const updateOrderStatus = async (id, status) => {
 
 export const deleteOrder = async (id) => {
     try {
-        const response = await axios.delete(`${process.env.REACT_APP_ORDER_SERVICE}${id}/`, {},
+        await axios.delete(`${process.env.REACT_APP_ORDER_SERVICE}${id}/`, {},
             {
                 headers: {
                     "Access-Control-Allow-Origin": "*",

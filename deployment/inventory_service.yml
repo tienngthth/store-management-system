@@ -1,26 +1,26 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: user-service
+  name: inventory-service
   labels:
-    app: user-service
+    app: inventory-service
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: user-service
+      app: inventory-service
   template:
     metadata:
       labels:
-        app: user-service
+        app: inventory-service
     spec:
       containers:
-      - name: user-service
-        image: tienngthth/user-service:3
+      - name: inventory-service
+        image: tienngthth/inventory-service:3
         livenessProbe:
             failureThreshold: 3
             httpGet:
-              path: /users/health
+              path: /inventory/health
               port: 80
               scheme: HTTP
             initialDelaySeconds: 60
@@ -30,7 +30,7 @@ spec:
         readinessProbe:
           failureThreshold: 3
           httpGet:
-            path: /users/health
+            path: /inventory/health
             port: 80
             scheme: HTTP
           initialDelaySeconds: 60
@@ -43,12 +43,12 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: user-service
+  name: inventory-service
 spec:
   selector:
-    app: user-service
+    app: inventory-service
   ports:
     - protocol: TCP
-      port: 81
+      port: 83
       targetPort: 80
   type: NodePort

@@ -10,19 +10,19 @@ export const fetchItems = async () => {
                     "Access-Control-Allow-Headers": "*"
                 }
             })
-        return response.data
+        return {"items": response.data}
     } catch (error) {
         if (error.message) {
-            return error.message
+            return {"error": error.message}
         }
-        return error.response.data.error;
+        return {"error": error.response.data.error};
     }
 }
 
 
 export const createItemApi = async (name, description, price, quantity) => {
     try {
-        const response = await axios.post(`${process.env.REACT_APP_INVENTORY_SERVICE}`, {
+        await axios.post(`${process.env.REACT_APP_INVENTORY_SERVICE}`, {
             name: name,
             description: description,
             price: price,
@@ -45,7 +45,7 @@ export const createItemApi = async (name, description, price, quantity) => {
 
 export const deleteItem = async (id) => {
     try {
-        const response = await axios.delete(`${process.env.REACT_APP_INVENTORY_SERVICE}${id}/`, {},
+        await axios.delete(`${process.env.REACT_APP_INVENTORY_SERVICE}${id}/`, {},
             {
                 headers: {
                     "Access-Control-Allow-Origin": "*",
@@ -63,7 +63,7 @@ export const deleteItem = async (id) => {
 
 export const updateItem = async (id, name, description, price, quantity) => {
     try {
-        const response = await axios.put(`${process.env.REACT_APP_INVENTORY_SERVICE}${id}/`, {
+        await axios.put(`${process.env.REACT_APP_INVENTORY_SERVICE}${id}/`, {
             name: name,
             description: description,
             price: price,

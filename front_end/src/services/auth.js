@@ -20,6 +20,9 @@ export const loginWithEmail = async (email, password) => {
         }
         return data
     } catch (error) {
+        if (error.message) {
+            return error.message
+        }
         return error.response.data.message;
     }
 }

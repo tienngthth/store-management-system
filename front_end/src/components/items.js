@@ -9,7 +9,6 @@ export default function Items(
     const [user, setUser] = useState(localStorage.getItem('user') ? JSON.parse(localStorage.getItem('user')) : null);
     const [items, setItems] = useState([]);
     const [openDeleteModal, setOpenDeleteModal] = React.useState(false);
-    const [openUpdateModal, setOpenUpdateModal] = React.useState(false);
     const [loading, setLoading] = useState(false)
     const [item, setItem] = useState({});
     const [name, setName] = useState('');
@@ -23,8 +22,9 @@ export default function Items(
     useEffect(() => {
         setCart([]);
         const fetch = async () => {
-            const items = await fetchItems();
-            if (items) {
+            const data = await fetchItems();
+            if (!data.error) {
+                const items = data.items;
                 var tempCart = {};
                 for (var i = 0; i < items.length; i++) {
                     tempCart[items[i].id] = 0;
@@ -153,7 +153,6 @@ export default function Items(
                         </thead>
                         <tbody className='align-baseline'>
                             {
-                               console.log(items) && 
                                 items.map(item => <>
                                     <tr id={item.id}>
                                         {
