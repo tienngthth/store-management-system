@@ -11,6 +11,7 @@ export default function LoginPage(
     const [error, setError] = React.useState('')
 
     const login = async () => {
+        setError('')
         if (email !== '' && password !== '') {
             const data = await loginWithEmail(email, password)
             if (data.user) {
@@ -20,12 +21,14 @@ export default function LoginPage(
                     setCreateItem(false)
                 }
                 setLoggedIn(true)
-            } else
-                setError(error)
+            } else {
+                setError(data)
+            }
         }
     }
 
     const signUp = async () => {
+        setError('')
         if (email !== '' && password !== '') {
             const error = await apiCreateUser(email, password)
             if (error) {

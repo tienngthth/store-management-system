@@ -14,9 +14,11 @@ export const apiCreateUser = async (email, password) => {
                 }
             })
     } catch (error) {
-        if (error.message) {
+        if (error.response) {
+            return error.response.data.error
+        } else if (error.message) {
             return error.message
         }
-        return error.response.data.error;
+        return "Failed to create user"
     }
 }

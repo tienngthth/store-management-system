@@ -10,12 +10,15 @@ export const fetchItems = async () => {
                     "Access-Control-Allow-Headers": "*"
                 }
             })
-        return {"items": response.data}
+        return { "items": response.data }
     } catch (error) {
-        if (error.message) {
-            return {"error": error.message}
+        if (error.response) {
+            return { "error": error.response.data.error };
         }
-        return {"error": error.response.data.error};
+        if (error.message) {
+            return { "error": error.message }
+        }
+        return { "error": "Failed to fetch items" }
     }
 }
 
@@ -36,10 +39,12 @@ export const createItemApi = async (name, description, price, quantity) => {
                 }
             })
     } catch (error) {
-        if (error.message) {
+        if (error.response) {
+            return error.response.data.error
+        } else if (error.message) {
             return error.message
         }
-        return error.response.data.error;
+        return "Failed to create item"
     }
 }
 
@@ -54,10 +59,12 @@ export const deleteItem = async (id) => {
                 }
             })
     } catch (error) {
-        if (error.message) {
+        if (error.response) {
+            return error.response.data.error
+        } else if (error.message) {
             return error.message
         }
-        return error.response.data.error;
+        return "Failed to delete item"
     }
 }
 
@@ -77,9 +84,11 @@ export const updateItem = async (id, name, description, price, quantity) => {
                 }
             })
     } catch (error) {
-        if (error.message) {
+        if (error.response) {
+            return error.response.data.error
+        } else if (error.message) {
             return error.message
         }
-        return error.response.data.error;
+        return "Failed to update item"
     }
 }

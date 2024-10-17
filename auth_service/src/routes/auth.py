@@ -16,5 +16,5 @@ def login():
         if user and user.password == password:
             access_token = create_access_token(identity=user.id)
             return jsonify({'message': 'Login Success', 'access_token': access_token, 'user': user.to_dict()})
-        return jsonify({'error': 'Unauthorized'}), 401
-    return jsonify({'error': 'Login Failed'}), 401
+        return {'error': 'Incorrect password'}, 401
+    return {'error': 'Login Failed'}, 401

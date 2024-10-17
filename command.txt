@@ -8,14 +8,14 @@ cd store-management-system
 docker build -t tienngthth/order-service:3 order_service/.
 docker build -t tienngthth/inventory-service:3 inventory_service/.
 docker build -t tienngthth/user-service:3 user_service/.
-docker build -t tienngthth/auth-service:4 auth_service/.
-docker build -t tienngthth/front-end:5 front_end/.
+docker build -t tienngthth/auth-service:7 auth_service/.
+docker build -t tienngthth/front-end:10 front_end/.
 
 docker push tienngthth/user-service:3
-docker push tienngthth/auth-service:4
+docker push tienngthth/auth-service:7
 docker push tienngthth/order-service:3
 docker push tienngthth/inventory-service:3
-docker push tienngthth/front-end:5
+docker push tienngthth/front-end:10
 
 kubectl apply -f deployment/postgres.yml
 kubectl apply -f deployment/auth_service.yml
@@ -24,10 +24,6 @@ kubectl apply -f deployment/inventory_service.yml
 kubectl apply -f deployment/order_service.yml
 kubectl apply -f deployment/ingress.yml
 kubectl apply -f deployment/front_end.yml
-
-helm repo add ingress-nginx https://kubernetes.github.io/ingress-nginx
-helm repo update
-helm install nginx-ingress ingress-nginx/ingress-nginx
 
 gcloud compute addresses create backend-ip --global
 gcloud compute addresses describe backend-ip --global

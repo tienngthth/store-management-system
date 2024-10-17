@@ -17,10 +17,12 @@ export const createOrder = async (user_id, item, quantity) => {
                 }
             })
     } catch (error) {
-        if (error.message) {
+        if (error.response) {
+            return error.response.data.error
+        } else if (error.message) {
             return error.message
         }
-        return error.response.data.error;
+        return "Failed to create order"
     }
 }
 
@@ -33,12 +35,15 @@ export const getOrders = async (user_id) => {
                 "Access-Control-Allow-Headers": "*"
             }
         })
-        return {"orders": response.data}
+        return { "orders": response.data }
     } catch (error) {
-        if (error.message) {
-            return {"error": error.message }
+        if (error.response) {
+            return { "error": error.response.data.error }
         }
-        return {"error": error.response.data.error}
+        if (error.message) {
+            return { "error": error.message }
+        }
+        return { "error": "Failed to fetch orders"}
     }
 }
 
@@ -51,12 +56,15 @@ export const getAllOrders = async () => {
                 "Access-Control-Allow-Headers": "*"
             }
         })
-        return {"orders": response.data}
+        return { "orders": response.data }
     } catch (error) {
-        if (error.message) {
-            return {"error": error.message }
+        if (error.response) {
+            return { "error": error.response.data.error };
         }
-        return {"error": error.response.data.error}
+        if (error.message) {
+            return { "error": error.message }
+        }
+        return { "error": "Failed to fetch orders" }
     }
 }
 
@@ -73,10 +81,12 @@ export const updateOrderStatus = async (id, status) => {
                 }
             })
     } catch (error) {
-        if (error.message) {
+        if (error.response) {
+            return error.response.data.error
+        } else if (error.message) {
             return error.message
         }
-        return error.response.data.error;
+        return "Failed to update order"
     }
 }
 
@@ -91,9 +101,11 @@ export const deleteOrder = async (id) => {
                 }
             })
     } catch (error) {
-        if (error.message) {
+        if (error.response) {
+            return error.response.data.error
+        } else if (error.message) {
             return error.message
         }
-        return error.response.data.error;
+        return "Failed to delete order"
     }
 }

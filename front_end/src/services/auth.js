@@ -20,9 +20,12 @@ export const loginWithEmail = async (email, password) => {
         }
         return data
     } catch (error) {
-        if (error.message) {
+        console.log(error)
+        if (error.response) {
+            return error.response.data.error
+        } else if (error.message) {
             return error.message
         }
-        return error.response.data.message;
+        return "Failed to login"
     }
 }
