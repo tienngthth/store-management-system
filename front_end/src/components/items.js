@@ -4,7 +4,7 @@ import Modal from 'components/modal';
 import { createOrder } from 'services/order';
 
 export default function Items(
-    { refresh, setError }
+    { refresh, setError, switchShowOrders }
 ) {
     const [user, setUser] = useState(localStorage.getItem('user') ? JSON.parse(localStorage.getItem('user')) : null);
     const [items, setItems] = useState([]);
@@ -54,18 +54,25 @@ export default function Items(
     }
 
     const handleEditItem = async () => {
-        await updateItem(item.id, name, description, price, quantity);
-        setRefetch(!refetch);
-        setEdit(-1);
+        if (price < 0 || quantity < 0) {
+            setError('Price and quantity must be positive');
+        } else {
+            await updateItem(item.id, name, description, price, quantity);
+            setRefetch(!refetch);
+            setEdit(-1);
+        }
     }
 
     const handleAddToCart = async (item) => {
         if (cart[item.id] > item.quantity) {
             setError('Quantity exceeds available stock');
+        } else if (cart[item.id] < 0) {
+            setError('Quantity must be positive');
         } else {
             await createOrder(user.id, item, cart[item.id]);
             setError('');
             resetCart();
+            switchShowOrders();
         }
     }
 
@@ -193,6 +200,7 @@ export default function Items(
                                                         value={price}
                                                         onChange={(e) => setPrice(e.target.value)}
                                                         type="number"
+                                                        min={0}
                                                         className="w-24 p-2 rounded-lg border border-gray-300 mr-4">
                                                     </input>
                                             }
@@ -205,6 +213,7 @@ export default function Items(
                                                         value={quantity}
                                                         onChange={(e) => setQuantity(e.target.value)}
                                                         type="number"
+                                                        min={0}
                                                         className="w-24 p-2 rounded-lg border border-gray-300 mr-4">
                                                     </input>
                                             }
@@ -233,6 +242,7 @@ export default function Items(
                                                     type="number" 
                                                     value={cart[item.id]} 
                                                     max={item.quantity}
+                                                    min={0}
                                                     onChange={(e) => handleChangeCart(e, item.id)} 
                                                     className="w-20 p-2 rounded-lg border border-gray-300 mr-4"
                                                 >

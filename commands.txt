@@ -1,0 +1,38 @@
+git clone https://github.com/tienngthth/store-management-system.git
+cd store-management-system
+
+# Build and push images
+docker build -t tienngthth/order-service:3 order_service/.
+docker build -t tienngthth/inventory-service:3 inventory_service/.
+docker build -t tienngthth/user-service:7 user_service/.
+docker build -t tienngthth/auth-service:8 auth_service/.
+docker build -t tienngthth/front-end:17 front_end/.
+
+docker push tienngthth/user-service:7
+docker push tienngthth/auth-service:8
+docker push tienngthth/order-service:3
+docker push tienngthth/inventory-service:3
+docker push tienngthth/front-end:17
+
+# Create static IP address for backend ingress
+gcloud compute addresses create backend-ip --global
+gcloud compute addresses describe backend-ip --global
+
+# Create nodes, deployments and services
+gcloud container clusters get-credentials infs3208-cluster-1 --zone=australia-southeast2-c
+gcloud container clusters resize infs3208-cluster-1 --num-nodes=2 --zone australia-southeast2-c
+kubectl get node -o wide
+
+kubectl apply -f deployment/postgres.yml
+kubectl apply -f deployment/auth_service.yml
+kubectl apply -f deployment/user_service.yml
+kubectl apply -f deployment/inventory_service.yml
+kubectl apply -f deployment/order_service.yml
+kubectl apply -f deployment/ingress.yml
+kubectl apply -f deployment/front_end.yml
+
+# For testing
+kubectl scale --replicas=2 deployment/front-end
+kubectl rollout status deployment/front-end
+kubectl rollout history deployment/front-end
+kubectl rollout undo deployment/front-end --to-revision=1

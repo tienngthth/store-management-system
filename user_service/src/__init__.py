@@ -4,6 +4,7 @@ from flask_cors import CORS
 from .models import db
 from .routes.root import root_api
 from .routes.user import users_api
+from .models.user import User
 from flask_cors import CORS
 from werkzeug.middleware.proxy_fix import ProxyFix
 
@@ -23,6 +24,10 @@ def load_models(app):
    with app.app_context(): 
       db.create_all() 
       db.session.commit()
+      admin = User(email='admin', password='admin', role='admin')
+      if not User.query.filter_by(email='admin').first():
+         db.session.add(admin)
+         db.session.commit()
 
 def create_app():
    app.config['SQLALCHEMY_DATABASE_URI'] = environ.get("DATABASE_URL", "postgresql://administrator:verySecretPassword@postgres-database:5432/db")

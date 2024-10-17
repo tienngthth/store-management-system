@@ -21,11 +21,13 @@ function App() {
   const [createItem, setCreateItem] = useState(user && user.role === 'admin' ? true : false);
 
   const switchShowItems = () => {
+    setError('');
     setShowItems(true);
     setShowOrders(false);
   }
 
   const switchShowOrders = () => {
+    setError('');
     setShowItems(false);
     setShowOrders(true);
   }
@@ -33,6 +35,8 @@ function App() {
   const handleCreateItem = async (e) => {
     if (isNaN(price) || isNaN(quantity)) {
       setError('Price and Quantity must be numbers');
+    } else if (price < 0 || quantity < 0) {
+      setError('Price and quantity must be positive');
     } else {
       if (name != '' && description != '' && price != '' && quantity != '') {
         const error = await createItemApi(name, description, price, quantity);
@@ -59,7 +63,7 @@ function App() {
         <NavBar setLoggedIn={setLoggedIn}></NavBar>
         <div>
           <div className="flex py-3 px-8 justify-between">
-          <span className="text-2xl font-semibold whitespace-nowrap">{showItems ? "Items" : "Orders"}</span>
+            <span className="text-2xl font-semibold whitespace-nowrap">{showItems ? "Items" : "Orders"}</span>
             <div className="flex justify-end mb-5">
               <div className="p-2">
                 <button disabled={showItems} type="button" href="#shop" className="text-blue-500 disabled:text-gray-400" onClick={switchShowItems}>Shop</button>
@@ -83,11 +87,29 @@ function App() {
                 </div>
                 <div className='w-fit'>
                   <label className="w-fit block mb-2">Price</label>
-                  <input required value={price} onChange={(e) => setPrice(e.target.value)} type="number" placeholder="price" className="p-2 rounded-lg border border-gray-300 mr-4"></input>
+                  <input
+                    required
+                    value={price}
+                    onChange={(e) => setPrice(e.target.value)}
+                    type="number"
+                    placeholder="price"
+                    className="p-2 rounded-lg border border-gray-300 mr-4"
+                    min={0}
+                  >
+                  </input>
                 </div>
                 <div className='w-fit'>
                   <label className="w-fit block mb-2">Quantity</label>
-                  <input required value={quantity} onChange={(e) => setQuantity(e.target.value)} type="number" placeholder="quantity" className="p-2 rounded-lg border border-gray-300 mr-4"></input>
+                  <input
+                    required
+                    value={quantity}
+                    onChange={(e) => setQuantity(e.target.value)}
+                    type="number"
+                    placeholder="quantity"
+                    className="p-2 rounded-lg border border-gray-300 mr-4"
+                    min={0}
+                  >
+                  </input>
                 </div>
                 <div className='content-center'>
                   <p className='text-red-600'>{error}</p>
@@ -98,8 +120,14 @@ function App() {
               </div>
             </form>
           }
+          {
+            !createItem && showItems &&
+            <div className='content-center'>
+              <p className='text-red-600'>{error}</p>
+            </div>
+          }
           <div className='flex'>
-            {showItems && <Items setError={setError} refresh={refresh}></Items>}
+            {showItems && <Items setError={setError} refresh={refresh} switchShowOrders={switchShowOrders}></Items>}
             {showOrders && <Orders setError={setError} refresh={refresh}></Orders>}
           </div>
         </div>

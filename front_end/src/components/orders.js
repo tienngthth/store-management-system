@@ -102,7 +102,7 @@ export default function Orders(
                     Quantity
                   </th>
                   <th scope="col" className="sticky z-10 top-0 px-6 py-3">
-                    Price
+                    Total Price
                   </th>
                   <th scope="col" className="sticky z-10 top-0 px-6 py-3">
                     Status
@@ -125,11 +125,11 @@ export default function Orders(
                       <td label="name" className="px-6 py-4 max-w-[300px] truncate">
                         {order.item_name}
                       </td>
-                      <td label="price" className="px-6 py-4 max-w-[300px] truncate">
-                        {order.item_price}
-                      </td>
                       <td label="quantity" className="px-6 py-4 max-w-[300px] truncate">
                         {order.quantity}
+                      </td>
+                      <td label="price" className="px-6 py-4 max-w-[300px] truncate">
+                        {order.item_price * order.quantity}
                       </td>
                       <td label="status" className="px-6 py-4 max-w-[300px] truncate">
                         {order.status}

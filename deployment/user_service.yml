@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
       - name: user-service
-        image: tienngthth/user-service:3
+        image: tienngthth/user-service:7
         livenessProbe:
             failureThreshold: 3
             httpGet:

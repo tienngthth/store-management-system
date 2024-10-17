@@ -52,7 +52,7 @@ export default function LoginPage(
                                 <span className="self-center text-2xl font-semibold whitespace-nowrap">StoreHouse</span>
                             </div>
                             <label for="email" class="mb-5">
-                                <span>Email</span>
+                                <span>Username</span>
                                 <input
                                     type="email"
                                     name="email"

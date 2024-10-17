@@ -22,7 +22,6 @@ export const fetchItems = async () => {
     }
 }
 
-
 export const createItemApi = async (name, description, price, quantity) => {
     try {
         await axios.post(`${process.env.REACT_APP_INVENTORY_SERVICE}`, {
